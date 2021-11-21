@@ -1,0 +1,13 @@
+[package]
+name = "pitr_tool"
+version = "0.1.0"
+authors = ["urlordjames <32751441+urlordjames@users.noreply.github.com>"]
+license = "GPL-3.0-or-later"
+edition = "2018"
+
+[dependencies]
+pitr_util = { git = "https://github.com/urlordjames/pitr_util.git", branch = "main" }
+clap = "2.33"
+
+[profile.release]
+lto = "fat"
