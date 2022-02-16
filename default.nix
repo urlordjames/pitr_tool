@@ -1,9 +1,9 @@
 let pkgs = import <nixpkgs> {};
 in pkgs.rustPlatform.buildRustPackage {
 	pname = "pitr_tool";
-	version = "1.0.1";
+	version = "1.1.0";
 
 	src = ./.;
 
-	cargoSha256 = "1w3z6qhly2f1lm7irh1xqrp6afzh2g9fd96784lk9qyzvknxa815";
+	cargoSha256 = "10s59wfdzl7rghmkm9pnypvllhwph7k0aykhj5xpyrc0xhpkyzkn";
 }
