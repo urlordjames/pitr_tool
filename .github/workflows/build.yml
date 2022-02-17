@@ -6,9 +6,11 @@ jobs:
   cargo-build:
     strategy:
       matrix:
-        os:
-          - "ubuntu-latest"
-          - "windows-latest"
+        include:
+          - os: "ubuntu-latest"
+            executable: "pitr_tool"
+          - os: "windows-latest"
+            executable: "pitr_tool.exe"
 
     runs-on: "${{ matrix.os }}"
 
@@ -27,4 +29,4 @@ jobs:
     - uses: "actions/upload-artifact@v2"
       with:
         name: "executable (${{ matrix.os }})"
-        path: "target/release"
+        path: "target/release/${{ matrix.executable }}"
