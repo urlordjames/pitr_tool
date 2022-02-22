@@ -1,4 +1,4 @@
-use clap::{Arg, SubCommand};
+use clap::{Parser, Subcommand};
 use pitr_util::pitrmap::PitrMap;
 use pitr_util::errors::{FromFileError, FromStringError};
 
@@ -18,30 +18,33 @@ fn get_map(filename: &str) -> Result<PitrMap, String> {
 	}
 }
 
+#[derive(Parser)]
+#[clap(author, version, about)]
+#[clap(propagate_version = true)]
+struct Cli {
+	#[clap(subcommand)]
+	command: Commands
+}
+
+#[derive(Subcommand)]
+enum Commands {
+	Info {
+		files: Vec<String>
+	},
+	Merge {
+		files: Vec<String>,
+
+		#[clap(short, long)]
+		output: Option<String>
+	}
+}
+
 fn main() {
-	let matches = clap::App::new("pitr_tool")
-		.version(clap::crate_version!())
-		.subcommand(SubCommand::with_name("info")
-			.arg(Arg::with_name("files")
-				.required(true)
-				.multiple(true)))
-		.subcommand(SubCommand::with_name("merge")
-			.arg(Arg::with_name("files")
-				.required(true)
-				.multiple(true))
-			.arg(Arg::with_name("output")
-				.short("o")
-				.long("output")
-				.takes_value(true)))
-		.get_matches();
+	let matches = Cli::parse();
 
-	let subcommand = matches.subcommand();
-
-	match subcommand {
-		("info", Some(sub_matches)) => {
-			let file_names = sub_matches.values_of("files").unwrap();
-
-			for filename in file_names {
+	match &matches.command {
+		Commands::Info { files } => {
+			for filename in files {
 				match get_map(filename) {
 					Ok(parsed_map) => {
 						println!("---info for {}---", filename);
@@ -56,12 +59,10 @@ fn main() {
 				}
 			}
 		},
-		("merge", Some(sub_matches)) => {
-			let input_files = sub_matches.values_of("files").unwrap();
-
+		Commands::Merge { files, output } => {
 			let mut new_map = PitrMap::new();
 
-			for filename in input_files {
+			for filename in files {
 				let map = get_map(filename);
 
 				match map {
@@ -77,7 +78,6 @@ fn main() {
 			}
 
 			let serialized_map = new_map.to_string().unwrap();
-			let output = sub_matches.value_of("output");
 
 			match output {
 				Some(filename) => {
@@ -88,8 +88,5 @@ fn main() {
 				}
 			}
 		},
-		_ => {
-			println!("specify a subcommand");
-		}
 	}
 }
