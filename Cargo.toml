@@ -1,13 +1,13 @@
 [package]
 name = "pitr_tool"
-version = "1.1.1"
+version = "1.2.0"
 authors = ["urlordjames <32751441+urlordjames@users.noreply.github.com>"]
 license = "GPL-3.0-or-later"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-pitr_util = { git = "https://github.com/urlordjames/pitr_util.git", tag = "v1.1.0" }
-clap = { version = "3.1", features = [ "derive" ] }
+pitr_util = { git = "https://github.com/urlordjames/pitr_util.git", tag = "v1.2.0" }
+clap = { version = "3.2", features = [ "derive" ] }
 
 [profile.release]
 lto = "fat"

@@ -26,6 +26,7 @@ struct Cli {
 	command: Commands
 }
 
+// TODO: String -> std::path::PathBuf
 #[derive(Subcommand)]
 enum Commands {
 	Info {
@@ -49,6 +50,7 @@ fn main() {
 					Ok(parsed_map) => {
 						println!("---info for {}---", filename);
 
+						println!("Map Name: {}", parsed_map.map_name());
 						println!("Blocks: {}", parsed_map.Blocks.len());
 						println!("Props: {}", parsed_map.Props.len());
 						println!("Enemies: {}", parsed_map.Enemies.len());
